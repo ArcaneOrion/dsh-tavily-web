@@ -1,0 +1,21 @@
+# Mounts the Tavily tools into the host composition.
+#
+# The row works with no config at all: the plugin's own defaults put the whole
+# TAVILY_API_KEY family (TAVILY_API_KEY, TAVILY_API_KEY_2 … TAVILY_API_KEY_8) in
+# the rotation pool, and a reference nobody configured simply resolves to nothing
+# and is skipped. So a second account joins the pool by adding one line to
+# ~/.dsh/.credentials.yaml — no edit here, no composition change.
+#
+# Config is available when the defaults do not fit. Override it from the
+# user-owned layer (~/.dsh/profiles/<profile>/cordis.patch.yml), which is applied
+# after every bundle layer, rather than editing this file:
+#
+#   - id: tavily-web
+#     config:
+#       keyRefs: [TAVILY_API_KEY, TAVILY_WORK_KEY]   # replaces the default family
+#       apiKeys: []                                  # literal keys; the seam is better
+#       cooldownSeconds: 900                         # how long a failed key stays out
+#
+- insert:
+    - id: tavily-web
+      name: '@arcaneorion/dsh-tavily-web'

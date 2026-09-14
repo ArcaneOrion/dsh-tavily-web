@@ -1,0 +1,7 @@
+{
+  "name": "@arcaneorion/dsh-tavily-web",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "src/tavily-web.ts",
+  "dsh": { "bundle": { "patch": "./cordis.patch.yml" } }
+}
