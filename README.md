@@ -19,9 +19,9 @@ dsh plugin --profile web add @arcaneorion/dsh-tavily-web
 
 profile 级 bundle：装一次，该 profile 下所有会话都拿到 `tavily_search` / `web_fetch`。
 
-> **发布状态**：`@arcaneorion/dsh-tavily-web` 已发布（`0.1.0`，2026-09-15 10:32 CST），上面这条命令可直接用。
-> 判断依据永远以命令为准，别信文档里写死的时间点：`npm view @arcaneorion/dsh-tavily-web versions --json`（404 即尚未发布/该版本未发）。
-> 未发布期间（或想改本地源码即时生效）走本地 `link:` 挂载，即 `~/.dsh/profiles/<profile>/package.json` 里写
+> **发布状态**：已发布到 npm，上面的命令可直接用。最新版本号永远现查、别信文档里写死的号：
+> `npm view @arcaneorion/dsh-tavily-web version`（404 即尚未发布）。
+> 想在本地改源码即时生效，则走 `link:` 挂载：`~/.dsh/profiles/<profile>/package.json` 写
 > `"@arcaneorion/dsh-tavily-web": "link:/home/arcaneorion/AI/AI-DSH/plugin/tavily-web-plugin"`，
 > 并在 `dsh.profile.bundles` 追加包名。
 >
