@@ -10,6 +10,38 @@ DSH 的 Tavily 检索 + 网页抓取能力层（host 半，profile bundle）。�
 检索**不**注册为 `web.search()` 的 provider：旁边已有出厂的 DeepSeek 检索 provider，再挂一个可用
 provider 会让 `web.search()` 的选择变歧义。检索只以模型可见工具的形式存在。
 
+## 安装
+
+```bash
+dsh plugin --profile web add @arcaneorion/dsh-tavily-web
+# 然后重启 dsh --profile web —— host 插件不走热重载
+```
+
+profile 级 bundle：装一次，该 profile 下所有会话都拿到 `tavily_search` / `web_fetch`。
+
+> **发布状态**：截至 2026-09-15 本包**尚未发布到 npm**（registry 无记录），上面这条命令要等发布后才可用；
+> 在此之前请走本地 `link:` 挂载，即 `~/.dsh/profiles/<profile>/package.json` 里写
+> `"@arcaneorion/dsh-tavily-web": "link:/home/arcaneorion/AI/AI-DSH/plugin/tavily-web-plugin"`，
+> 并在 `dsh.profile.bundles` 追加包名。
+>
+> 另外 npm tarball 只含 `src/`、`cordis.patch.yml`、`README.md`（`files` 白名单），`tests/` 不随包发布——
+> 要跑下面的离线用例请用仓库副本。
+
+## 兼容性（DSH 版本）
+
+本包在 **DSH `0.1.1-rc.2`**（`dsh --version`）上开发与实测，宿主侧依赖按该版本**精确钉住**：
+
+| 宿主包 | 声明 | 用途 |
+|---|---|---|
+| `@deepseek-ai/dsh-tools` | `>=0.1.1-rc.2` | `defineTool` 注册 `tavily_search` / `web_fetch` |
+| `@deepseek-ai/dsh-web` | `0.1.1-rc.2` | 把自身挂成 `web` 注册表的 fetch provider |
+| `@deepseek-ai/dsh-shell` | `0.1.1-rc.2` | 走 shell seam 调 `curl` 抓页 |
+| `@deepseek-ai/cordis` | `^4.0.2` | 插件生命周期 |
+| `@deepseek-ai/schemastery` | `^3.18.2` | 配置 schema（keyRefs / apiKeys / cooldownSeconds） |
+
+无 client 半，故不声明 `react`。**换 DSH 版本必须先重新验证再放宽 peer**：`web` 注册表与 shell seam
+的契约跨版本会变，精确钉住的 peer 会在安装时报冲突，好过装上去静默失效。
+
 ## 文件
 
 | 文件 | 说明 |
