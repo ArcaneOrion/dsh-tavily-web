@@ -51,6 +51,7 @@ profile 级 bundle：装一次，该 profile 下所有会话都拿到 `tavily_se
 | `cordis.patch.yml` | bundle 声明（行 id `tavily-web`），已挂载进 `web` profile |
 | `tests/pool.test.cjs` | 池行为离线用例（脚本化 shell，不联网、不消耗额度） |
 | `tests/live-pool-check.cjs` | 真实密钥 + 真实网络的端到端探针 |
+| `LICENSE` | MIT（`package.json` 同名字段；npm 打包时自动附带，无需写进 `files`） |
 
 ## key 池
 

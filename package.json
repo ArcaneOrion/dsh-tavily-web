@@ -1,12 +1,27 @@
 {
   "name": "@arcaneorion/dsh-tavily-web",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "main": "src/tavily-web.ts",
+  "description": "DSH Tavily search and page fetch: a model-visible tavily_search tool backed by a rotating multi-key pool, plus web_fetch through the shell seam.",
+  "license": "MIT",
+  "author": "arcanexis",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ArcaneOrion/dsh-tavily-web.git"
   },
+  "keywords": [
+    "deepseek",
+    "harness",
+    "dsh",
+    "dsh-plugin",
+    "tavily",
+    "web-search",
+    "web-fetch",
+    "search",
+    "api-key-pool",
+    "tool"
+  ],
   "files": [
     "src",
     "cordis.patch.yml",
@@ -22,5 +37,9 @@
     "@deepseek-ai/dsh-shell": "0.1.1-rc.2",
     "@deepseek-ai/schemastery": "^3.18.2"
   },
-  "dsh": { "bundle": { "patch": "./cordis.patch.yml" } }
+  "dsh": { "bundle": { "patch": "./cordis.patch.yml" } },
+  "homepage": "https://github.com/ArcaneOrion/dsh-tavily-web#readme",
+  "bugs": {
+    "url": "https://github.com/ArcaneOrion/dsh-tavily-web/issues"
+  }
 }
