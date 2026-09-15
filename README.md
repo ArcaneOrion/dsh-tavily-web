@@ -19,8 +19,9 @@ dsh plugin --profile web add @arcaneorion/dsh-tavily-web
 
 profile 级 bundle：装一次，该 profile 下所有会话都拿到 `tavily_search` / `web_fetch`。
 
-> **发布状态**：截至 2026-09-15 本包**尚未发布到 npm**（registry 无记录），上面这条命令要等发布后才可用；
-> 在此之前请走本地 `link:` 挂载，即 `~/.dsh/profiles/<profile>/package.json` 里写
+> **发布状态**：`@arcaneorion/dsh-tavily-web` 在 2026-09-15 10:29（CST）时点**尚未发布到 npm**。
+> 判断方法以命令为准，别信文档：`npm view @arcaneorion/dsh-tavily-web versions --json`（404 即未发布）。
+> 未发布期间请走本地 `link:` 挂载，即 `~/.dsh/profiles/<profile>/package.json` 里写
 > `"@arcaneorion/dsh-tavily-web": "link:/home/arcaneorion/AI/AI-DSH/plugin/tavily-web-plugin"`，
 > 并在 `dsh.profile.bundles` 追加包名。
 >
