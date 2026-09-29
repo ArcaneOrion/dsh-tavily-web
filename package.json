@@ -1,10 +1,11 @@
 {
   "name": "@arcaneorion/dsh-tavily-web",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "type": "module",
   "main": "src/tavily-web.js",
   "scripts": {
-    "build": "esbuild src/tavily-web.ts --format=esm --target=node24 --charset=utf8 --outfile=src/tavily-web.js"
+    "build": "esbuild src/tavily-web.ts --format=esm --target=node24 --charset=utf8 --outfile=src/tavily-web.js",
+    "prepack": "npm run build"
   },
   "description": "DSH Tavily search and page fetch: a model-visible tavily_search tool backed by a rotating multi-key pool, plus web_fetch through the shell seam.",
   "license": "MIT",
@@ -35,7 +36,7 @@
   },
   "peerDependencies": {
     "@deepseek-ai/cordis": "^4.0.4",
-    "@deepseek-ai/dsh-tools": ">=0.2.0-rc.1",
+    "@deepseek-ai/dsh-tools": "0.2.0-rc.1",
     "@deepseek-ai/dsh-web": "0.2.0-rc.1",
     "@deepseek-ai/dsh-shell": "0.2.0-rc.1",
     "@deepseek-ai/schemastery": "^3.18.4"
