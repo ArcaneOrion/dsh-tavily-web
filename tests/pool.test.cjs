@@ -13,7 +13,7 @@ const { exec } = require('node:child_process')
 const { join } = require('node:path')
 const { pathToFileURL } = require('node:url')
 
-const PLUGIN = join(__dirname, '..', 'src', 'tavily-web.ts')
+const PLUGIN = join(__dirname, '..', 'src', 'tavily-web.js')
 const PLUGIN_LABEL = 'tavily search' // console prefix to silence in output
 
 // ── mocks ───────────────────────────────────────────────────────────────────

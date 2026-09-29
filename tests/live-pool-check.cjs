@@ -14,7 +14,7 @@ const { homedir } = require('node:os')
 const { join } = require('node:path')
 const { pathToFileURL } = require('node:url')
 
-const PLUGIN = join(__dirname, '..', 'src', 'tavily-web.ts')
+const PLUGIN = join(__dirname, '..', 'src', 'tavily-web.js')
 const CREDENTIALS = process.env.DSH_CREDENTIALS || join(homedir(), '.dsh', '.credentials.yaml')
 const QUERIES = process.argv.slice(2).length > 0
   ? process.argv.slice(2)

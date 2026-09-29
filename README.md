@@ -53,11 +53,39 @@ profile 级 bundle：装一次，该 profile 下所有会话都拿到 `tavily_se
 
 | 文件 | 说明 |
 |---|---|
-| `src/tavily-web.ts` | 全部实现：配置 schema、key 池、检索、抓取、工具注册 |
+| `src/tavily-web.ts` | **源码**：配置 schema、key 池、检索、抓取、工具注册（带完整注释） |
+| `src/tavily-web.js` | **发布入口**（`package.json` 的 `main`）：由 .ts 转译而来，随包发布 |
 | `cordis.patch.yml` | bundle 声明（行 id `tavily-web`），已挂载进 `web` profile |
 | `tests/pool.test.cjs` | 池行为离线用例（脚本化 shell：桩件实现 0.2 的 `execute()` → `result()`，不联网、不消耗额度） |
 | `tests/live-pool-check.cjs` | 真实密钥 + 真实网络的端到端探针 |
 | `LICENSE` | MIT（`package.json` 同名字段；npm 打包时自动附带，无需写进 `files`） |
+
+### 为什么有两个同名文件（改代码前先读这段）
+
+`main` 必须是**普通 JS**，入口写成 `.ts` 会让「线上版本在任何机器上都加载不了」：
+
+- 本地 `link:` 挂载时能用——pnpm 建的是 symlink，Node ESM 默认解析 realpath，文件真实路径在
+  `plugin/` 下而不在 `node_modules` 里，所以 Node 的原生类型擦除放行；
+- 从 npm 正常安装后，文件真实路径落进 `node_modules`，Node 直接拒绝：
+  `Stripping types is currently unsupported for files under node_modules`。
+
+失败形态是**静默**的：loader 连 fiber 都建不起来（`fiberPhase: null`），`apply()` 从不执行，
+`tavily_search` 永远不出现，且没有显式报错。所以：
+
+```bash
+npm run build        # 改完 src/tavily-web.ts 后重新生成 src/tavily-web.js
+```
+
+**提交时两个文件一起提交**（.ts 保留完整注释作源码，.js 是发布产物）。
+
+发布前必须用**安装形态**验证，不能用 `link:` 形态验证——那正是这个坑躲过检查的原因：
+
+```bash
+mkdir -p /tmp/probe/node_modules/@arcaneorion
+cp -r . /tmp/probe/node_modules/@arcaneorion/dsh-tavily-web
+cd /tmp/probe && node -e "import('@arcaneorion/dsh-tavily-web').then(m=>console.log(Object.keys(m)))"
+# 打印 [ 'Config', 'apply', 'inject', 'name' ] 才算通过
+```
 
 ## key 池
 
