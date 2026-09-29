@@ -33,7 +33,11 @@ function makeCtx(shellRun, creds) {
           return { value: String(value), source: 'test' }
         },
       },
-      shell: { resolve: (r) => r, run: shellRun },
+      shell: {
+        resolve: (r) => r,
+        // dsh 0.2 的 shell seam：execute(spec) 返回进程句柄，前台结果由 handle.result() 给出。
+        execute: async (spec) => ({ result: async () => shellRun(spec) }),
+      },
     },
     tools,
   }

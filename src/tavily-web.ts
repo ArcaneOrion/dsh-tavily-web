@@ -49,9 +49,11 @@ export function apply(ctx: any, config?: any) {
   const abortedError = () => { const e = new Error('operation aborted'); e.name = 'AbortError'; return e }
 
   // One foreground curl run through the shell seam.
+  // dsh 0.2：seam 由 run(spec) 改为 execute(spec) → handle.result()。
   const runCurl = async (command: string, extra: any, signal?: AbortSignal) => {
     const request = Object.assign({ command, signal, timeoutMs: 30000, stdoutMaxBytes: 4 * 1024 * 1024 }, extra || {})
-    const result = await ctx.shell.run(ctx.shell.resolve(request))
+    const execution = await ctx.shell.execute(ctx.shell.resolve(request))
+    const result = await execution.result()
     if (result.aborted === true) throw abortedError()
     if (result.timedOut === true) throw new Error('request timed out')
     return result

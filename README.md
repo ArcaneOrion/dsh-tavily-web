@@ -30,15 +30,21 @@ profile 级 bundle：装一次，该 profile 下所有会话都拿到 `tavily_se
 
 ## 兼容性（DSH 版本）
 
-本包在 **DSH `0.1.1-rc.2`**（`dsh --version`）上开发与实测，宿主侧依赖按该版本**精确钉住**：
+> **当前工作树已适配 DSH `0.2.0-rc.1`**（peer 按 `0.2.0-rc.1` 声明；版本 `0.2.0`）。下列 `0.1.1-rc.2` 记录仅作历史基线。
 
 | 宿主包 | 声明 | 用途 |
 |---|---|---|
-| `@deepseek-ai/dsh-tools` | `>=0.1.1-rc.2` | `defineTool` 注册 `tavily_search` / `web_fetch` |
-| `@deepseek-ai/dsh-web` | `0.1.1-rc.2` | 把自身挂成 `web` 注册表的 fetch provider |
-| `@deepseek-ai/dsh-shell` | `0.1.1-rc.2` | 走 shell seam 调 `curl` 抓页 |
-| `@deepseek-ai/cordis` | `^4.0.2` | 插件生命周期 |
-| `@deepseek-ai/schemastery` | `^3.18.2` | 配置 schema（keyRefs / apiKeys / cooldownSeconds） |
+| `@deepseek-ai/dsh-tools` | `>=0.2.0-rc.1` | `defineTool` 注册 `tavily_search` / `web_fetch` |
+| `@deepseek-ai/dsh-web` | `0.2.0-rc.1` | 把自身挂成 `web` 注册表的 fetch provider |
+| `@deepseek-ai/dsh-shell` | `0.2.0-rc.1` | 走 shell seam 调 `curl` 抓页 |
+| `@deepseek-ai/cordis` | `^4.0.4` | 插件生命周期 |
+| `@deepseek-ai/schemastery` | `^3.18.4` | 配置 schema（keyRefs / apiKeys / cooldownSeconds） |
+
+### 0.1.1-rc.2 → 0.2.0-rc.1 的唯一变更：shell seam 由 `run()` 改为 `execute().result()`
+
+0.2 的 `ctx.shell` 只有一个执行入口 `execute(spec)`，返回进程句柄；前台结果要再 `await handle.result()`。
+本插件只用了前台执行，因此改动集中在 `runCurl` 一处：结果对象字段（`exitCode` / `stdout.text` /
+`stderr.text` / `truncated` / `timedOut` / `aborted`）与 0.1 一致，其余逻辑未动。
 
 无 client 半，故不声明 `react`。**换 DSH 版本必须先重新验证再放宽 peer**：`web` 注册表与 shell seam
 的契约跨版本会变，精确钉住的 peer 会在安装时报冲突，好过装上去静默失效。
@@ -49,7 +55,7 @@ profile 级 bundle：装一次，该 profile 下所有会话都拿到 `tavily_se
 |---|---|
 | `src/tavily-web.ts` | 全部实现：配置 schema、key 池、检索、抓取、工具注册 |
 | `cordis.patch.yml` | bundle 声明（行 id `tavily-web`），已挂载进 `web` profile |
-| `tests/pool.test.cjs` | 池行为离线用例（脚本化 shell，不联网、不消耗额度） |
+| `tests/pool.test.cjs` | 池行为离线用例（脚本化 shell：桩件实现 0.2 的 `execute()` → `result()`，不联网、不消耗额度） |
 | `tests/live-pool-check.cjs` | 真实密钥 + 真实网络的端到端探针 |
 | `LICENSE` | MIT（`package.json` 同名字段；npm 打包时自动附带，无需写进 `files`） |
 
